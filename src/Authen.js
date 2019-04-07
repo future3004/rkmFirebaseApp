@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link, Redirect } from 'react-router-dom';
 var firebase = require('firebase');
 
 // Initialize Firebase
@@ -25,7 +26,8 @@ class Authen extends Component {
     promise
     .then(user => {
       // when here: its good/success
-      var err = "Welcome " + user.email;
+      //var err = "Welcome " + user.email;
+      var err = <Redirect to="/home" />;
       // firebase.database().ref('users/' + user.uid).set({
       //   email: user.email
       // });
@@ -54,8 +56,10 @@ class Authen extends Component {
     //TODO: handle login promise
     promise.then(user => {
       var logout = document.getElementById('logout');
+      var err = <Redirect to="/home" />;
       //write welcome message to user
       logout.classList.remove('hide');
+      this.setState({err: err});
 
     });
 
@@ -95,6 +99,8 @@ class Authen extends Component {
      });
 
      // can also use redirect
+     var err = <Redirect to="/home" />;
+     this.setState({err: err});
 
    }).catch(function(e){
       var msg = e.message;
@@ -119,16 +125,22 @@ class Authen extends Component {
   render(){
     return(
       <div>
-        <input id="email" ref="email" type="email" placeholder="Enter Email"/> <br />
-        <input id="password" ref="password" type="password" placeholder="Enter password"/> <br />
+        <div className="container">
+          <input className="contInput" id="email" ref="email" type="email" placeholder="Enter Email"/> <br />
+          <input className="contInput" id="password" ref="password" type="password" placeholder="Enter password"/> <br />
+        </div>
+
         <p>{this.state.err}</p>
-      <button onClick={this.login}>Login</button>
-      <button onClick={this.signUp}>Sign Up</button>
-      <button id="logout" className="hide" onClick={this.logOut}>Log out</button> <br />
-      <button id="google" className="google" onClick={this.google}>Sign In with Google</button>
+
+        <button onClick={this.login}>Login</button>
+        <button onClick={this.signUp}>Sign Up</button>
+        <button id="logout" className="hide" onClick={this.logOut}>Log out</button> <br />
+        <button id="google" className="google" onClick={this.google}>Sign In with Google</button>
       </div>
       );
     }
   }
 
   export default Authen;
+
+  //<LoginHome />
